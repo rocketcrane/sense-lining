@@ -1,0 +1,130 @@
+# Format
+
+Line breaks and contrast are in [layout.md](layout.md). This file is the page: grid, type, SVG.
+
+Apply every rule.
+
+## Sheet
+
+- One wide sheet of columns, left to right. Not a stack of letter pages.
+- How many columns, and how large the sheet is, follow the text.
+- Width: `48 + 350(N − 1) + 324 + 48`, for N columns.
+- Height: deepest baseline plus 48 pt.
+- Margins: 48 pt.
+- Ground: white `#ffffff`. Type: `#111111`.
+- No column rules, boxes, page numbers, or running headers.
+- Main text and figures only. Leave the bibliography off. Keep inline reference numbers.
+
+
+
+## Type
+
+- Family: `Times New Roman, Times, serif`.
+- Size: 12 pt on 14 pt leading. One size except footnote cues.
+- Flush left, ragged right. Every line in a column shares that column's x.
+- No line longer than 324 pt (27 picas). If a title overruns, break it and expand upward.
+- y is a baseline. Consecutive lines are 14 pt apart. A blank line is 14 pt. Paragraphs are separated by one blank line.
+
+
+
+## Hangline
+
+All columns share one hangline: the first body baseline.
+
+Set it from what actually sits above the body. Lay out the masthead (title, subtitle, authors, journal, whatever the piece has) from the top of the title column. The hangline is one blank line below that masthead. If a section title, expanding upward, would hit the top margin, drop the hangline until it fits.
+
+Section titles sit one blank line above the hangline; extra title lines expand upward. Body starts on the hangline.
+
+## Columns
+
+As many as the text needs. `x = 48 + 350n` for n = 0, 1, 2, … from the left.
+
+Reading order: left to right across columns, top to bottom within a column.
+
+- If there is an abstract, it gets its own column (leftmost). Bold label `Abstract` one blank line above the hangline. Body italic, on the hangline. If there is no abstract, do not leave an empty column for one.
+- Next, the title column: document title, subtitle, authors, journal as the piece has them, then first body on the hangline.
+- Then one section per column. Title one blank line above the hangline. Body on the hangline.
+
+A section that does not fit continues in the next column to the right, on the hangline, with no repeated title. Break long sections at sensible points.
+
+A new subsection may start lower in a column that still has room: title after one blank line, body one blank line under that title.
+
+### Title styles
+
+- Document title, first line: bold roman. Subtitle: roman.
+- Authors: roman. Journal / publication: italic.
+- Abstract label: bold. Abstract body: italic.
+- Major / top-level section: bold roman.
+- Subsection: italic, not bold.
+- If a parent heading and its first child share a column, stack them above the hangline (parent above child). Extra lines expand up.
+
+
+
+## Indents
+
+Offsets from the column's x:
+
+
+| Role                                     | x           |
+| ---------------------------------------- | ----------- |
+| Block quote (italic)                     | column + 28 |
+| List marker line (dash or number)        | column + 28 |
+| Wrapped dash-list line                   | column + 35 |
+| Numbered-list body after the number line | column + 40 |
+
+
+Quotes of more than one line are block quotes. A quote attribution, when present, stays italic and indented with the quote.
+
+## In-line marks
+
+Citation numbers stay in the line as superscripts:
+
+```xml
+<tspan font-size="7" dy="-4">12</tspan><tspan dy="4"></tspan>
+```
+
+A word of emphasis, an introduced term, or the title of a work is an italic span:
+
+```xml
+<tspan font-style="italic">creatively</tspan>
+```
+
+A small set of contrasting terms may be bold spans. Rare.
+
+## Figures
+
+Place a figure in the column where the text calls it out.
+
+- Image top at the hangline, x at the column left.
+- Width 672 pt (spans two column slots). Height as the image requires.
+- Caption under the image, italic, at the column x, one grid step below the image.
+- Type in a column the figure overlaps begins below the figure, not through it.
+
+If the figure cannot be drawn, one line of roman body type in that column:
+
+```
+FIGURE 1 [diagram omitted]
+```
+
+
+
+## SVG
+
+One file. `width` and `height` are the computed sheet size.
+
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" width="WIDTH" height="HEIGHT" viewBox="0 0 WIDTH HEIGHT">
+  <rect width="WIDTH" height="HEIGHT" fill="#ffffff"/>
+  <g font-family="Times New Roman, Times, serif" font-size="12" fill="#111111">
+    <text x="48.0" y="Y" font-weight="bold">Section title</text>
+    <text x="48.0" y="HANGLINE">First line of body.</text>
+  </g>
+</svg>
+```
+
+- Each line of type is its own `<text>` element.
+- Put `font-weight="bold"` and `font-style="italic"` on the `<text>` when the whole line is bold or italic. Use `<tspan>` when only part of the line is.
+- XML-escape `&`, `<`, and `>`.
+- Keep the source's quotation marks and dashes (curly quotes, en dashes for ranges).
+
+The PDF is this same drawing at this same point size.
