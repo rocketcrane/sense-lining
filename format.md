@@ -10,7 +10,7 @@ Apply every rule.
 - How many columns, and how large the sheet is, follow the text.
 - Width: `48 + 350(N − 1) + 324 + 48`, for N columns.
 - Height: deepest baseline plus 48 pt.
-- Margins: 48 pt.
+- The 48 pt margin is measured to baselines, not to ink. The first masthead baseline is `y = 48`. Ascenders may sit in the top margin; descenders of the last line may sit in the bottom margin.
 - Ground: white `#ffffff`. Type: `#111111`.
 - No column rules, boxes, page numbers, or running headers.
 - Main text and figures only. Leave the bibliography off. Keep inline reference numbers.
@@ -31,21 +31,21 @@ Apply every rule.
 
 All columns share one hangline: the first body baseline.
 
-Set it from what actually sits above the body. Lay out the masthead (title, subtitle, authors, journal, whatever the piece has) from the top of the title column. The hangline is one blank line below that masthead. If a section title, expanding upward, would hit the top margin, drop the hangline until it fits.
+Set it from what actually sits above the body. Lay out the masthead (title, subtitle, authors, journal, whatever the piece has) from the top of the title column. The hangline is one blank line below that masthead: last masthead baseline + 28 pt. If a section title, expanding upward, would hit the top margin, drop the hangline until it fits.
 
-Section titles sit one blank line above the hangline; extra title lines expand upward. Body starts on the hangline.
+Section titles sit one line above the hangline (hangline − 14 pt). Extra title lines expand upward. Body starts on the hangline. In the title column the hangline − 14 slot is empty; in other columns the section title occupies it.
 
 ## Columns
 
-As many as the text needs. `x = 48 + 350n` for n = 0, 1, 2, … from the left.
+As many as the text needs. `x = 48 + 350n` for n = 0, 1, 2, … from the left. Columns are consecutive: do not skip an n.
 
 Reading order: left to right across columns, top to bottom within a column.
 
-- If there is an abstract, it gets its own column (leftmost). Bold label `Abstract` one blank line above the hangline. Body italic, on the hangline. If there is no abstract, do not leave an empty column for one.
+- If there is an abstract, it gets its own column (leftmost). Bold label `Abstract` one line above the hangline. Body italic, on the hangline. If there is no abstract, do not leave an empty column for one.
 - Next, the title column: document title, subtitle, authors, journal as the piece has them, then first body on the hangline.
-- Then one section per column. Title one blank line above the hangline. Body on the hangline.
+- Then one section per column. Title one line above the hangline. Body on the hangline.
 
-A section that does not fit continues in the next column to the right, on the hangline, with no repeated title. Break long sections at sensible points.
+There is no letter-page height to overflow. Break a long section at a paragraph once its next line would fall on or after the title column’s last baseline, and continue in the next column to the right, on the hangline, with no repeated title. Aim for a shared column depth; do not wait for a page break.
 
 A new subsection may start lower in a column that still has room: title after one blank line, body one blank line under that title.
 
@@ -93,12 +93,11 @@ A small set of contrasting terms may be bold spans. Rare.
 
 ## Figures
 
-Place a figure in the column where the text calls it out.
+Place a figure in the column where the text calls it out, in the text flow: top at the current grid line (the hangline if that column’s body has not started), x at the column left. Consecutive figures stack. Do not send a mid-column callout back up to the hangline or open an empty column pair for it.
 
-- Image top at the hangline, x at the column left.
-- Width 672 pt (spans two column slots). Height as the image requires.
-- Caption under the image, italic, at the column x, one grid step below the image.
-- Type in a column the figure overlaps begins below the figure, not through it.
+Keep the original size relative to the type. If the source is a PDF, measure the printed figure and the body size; display size = printed size × (12 / source body size). Do not stretch every figure to a fixed width. Two column slots are 674 pt (`350 + 324`). A figure that wide spans two slots; a smaller one stays smaller.
+
+Caption under the image, italic, at the column x, one grid step below the image. Type must not run through a figure. If a figure only covers part of a neighboring column’s height, type may sit above and below that band. Do not leave an empty column slot for a figure that is narrower than two column slots.
 
 If the figure cannot be drawn, one line of roman body type in that column:
 
@@ -123,6 +122,7 @@ One file. `width` and `height` are the computed sheet size.
 ```
 
 - Each line of type is its own `<text>` element.
+- Figures are `<image>` elements in the same file (a data URI is fine).
 - Put `font-weight="bold"` and `font-style="italic"` on the `<text>` when the whole line is bold or italic. Use `<tspan>` when only part of the line is.
 - XML-escape `&`, `<`, and `>`.
 - Keep the source's quotation marks and dashes (curly quotes, en dashes for ranges).

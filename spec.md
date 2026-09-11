@@ -1,6 +1,6 @@
 # Spec
 
-Runtime typographic rules live in [layout.md](layout.md). Page, type, and SVG rules live in [format.md](format.md). `SKILL.md` will reference those files; it should not restate them.
+Runtime typographic rules live in [layout.md](layout.md). Page, type, and SVG rules live in [format.md](format.md). Process lives in [SKILL.md](SKILL.md); it should not restate those rules.
 
 ## User journey
 
@@ -27,11 +27,9 @@ Runtime typographic rules live in [layout.md](layout.md). Page, type, and SVG ru
 
 ## Technical objects
 
-Open work for whoever writes `SKILL.md` and the supporting process.
-
 - **PDF text extraction.** Efficient, effective way to get text out of PDFs that have no OCR text. May involve an OCR system, or reading the PDF with the visual part of the agent model.
 - **OCR cleanup.** Further processing of extracted text, since PDF OCR text is often riddled with errors. Skip this when the given text is already clean.
-- **Semantic layout.** When laying out the text, the agent semantically decides how to lay the text out. It does not use a programmatic or algorithmic process. It transforms the clean text into the layout by applying [layout.md](layout.md).
-- **Output format rules.** Specified in [format.md](format.md), from the example SVGs.
-- **Libraries.** The easiest ways to do PDF processing and SVG/PDF creation: which libraries and processes to use, and how.
+- **Semantic layout.** The agent decides the sense line-breaks, what is a section, whether a passage is a list or a quote, and where a figure is called out, by applying [layout.md](layout.md). Measuring widths, packing columns, placing figures at their measured size, emitting SVG, and making the PDF may be code.
+- **Output format rules.** Specified in [format.md](format.md).
+- **Libraries.** PyMuPDF is the default; see [SKILL.md](SKILL.md).
 

@@ -116,16 +116,10 @@ From the lines in Thompson's bible, these rules:
 
 Let's rely on Thompson's heuristics, with a few adjustments.
 
-- The font is Times, 12/14, FL/RR, < 27 picas, 324 pts.; only one size.
 - Paragraphs should be re-broken by sense too, and separated by one line space.
-- Include the original authors, the source, and the date.
 
 - Quotes should be set in italics.
 - Quotes of more than one line might be called out in blocks, with a 28 pt indent.
 - Long lists should be considered for setting off as lists with a 28 pt indent and a return after each item — if the contents are central to the paper's topic. This decision requires judgement.
 - Abstracts, key words, and similar meta-data (i.e., not the main text) should be set in italics, so that they contrast with the main text.
-- Each section should have its own column.
-- Especially long sections should be broken at sensible points.
-- Section titles should appear one line above the hangline for columns.
-- Section titles that are more than one line should expand upwards.
 
