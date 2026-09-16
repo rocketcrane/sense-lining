@@ -7,11 +7,10 @@ The process is [SKILL.md](SKILL.md). Typographic rules are [layout.md](layout.md
 ## Use with a coding agent
 
 1. Give the agent this directory (clone, or point it at the skill files).
-2. Give it a source (PDF, URL, or pasted text).
-3. Ask it to use this skill to lay out the text, e.g. `Use sense-lining on this paper.`
+2. Give it a source (PDF, URL, or pasted text) and ask it to use this skill to lay out the text.
 4. Take the SVG and PDF it writes.
 
-It uses Python 3 and PyMuPDF (`pip install pymupdf`) for packing and PDF.
+It uses Python 3 and PyMuPDF for packing and PDF.
 
 ## Input
 
