@@ -29,7 +29,7 @@ Runtime typographic rules live in [layout.md](layout.md). Page, type, and SVG ru
 
 - **PDF text extraction.** Efficient, effective way to get text out of PDFs that have no OCR text. May involve an OCR system, or reading the PDF with the visual part of the agent model.
 - **OCR cleanup.** Further processing of extracted text, since PDF OCR text is often riddled with errors. Skip this when the given text is already clean.
-- **Semantic layout.** The agent decides the sense line-breaks, what is a section, whether a passage is a list or a quote, and where a figure is called out, by applying [layout.md](layout.md). Measuring widths, packing columns, placing figures at their measured size, emitting SVG, and making the PDF may be code.
+- **Semantic layout.** The agent writes two text files: a paragraph clean file, then a sense-lined file (line-breaks, column starts, sections, lists, quotes, figure callouts) by applying [layout.md](layout.md) and [format.md](format.md). The picture of density is [Boundary_Objects.pdf](Boundary_Objects.pdf); the picture of markers and fill is a worked trio such as [licklider_clean.txt](licklider_clean.txt), [licklider_lines.txt](licklider_lines.txt), [licklider.pdf](licklider.pdf). Measuring those lines, packing the declared columns, placing figures at their measured size, emitting SVG, and making the PDF may be code. Packing places each line and each column as written.
 - **Output format rules.** Specified in [format.md](format.md).
 - **Libraries.** PyMuPDF is the default; see [SKILL.md](SKILL.md).
 

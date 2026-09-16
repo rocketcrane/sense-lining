@@ -60,6 +60,8 @@ In 1979, Bradbury Thompson published the Washburn College Bible, a lectern versi
 
 Subsequently, he published a smaller, home edition. All the text is the same font, same size, same color: Sabon Antiqua (a modern version of Garamond) regular, 11 point body on 12.5 points of leading, black, flush left, ragged right. Lines are up to 50 characters in length (< 36 picas or 432 points). Italics are used for the names of the books and folios, but not in the text. And the words LORD, LORD GOD, JEHOVAH, and God's words to Moses, I AM THAT I AM and I AM, appear with an initial cap followed by small-caps. Chapters are separated by a line break. (Some verses are separated by a line break, though others are not; the pattern is unclear.) Each column starts with a new chapter or verse; chapters may run over, but not verses.
 
+On this sheet the working measure is in [format.md](format.md): 324 pt (27 picas), not Thompson’s 36. Apply the pause heuristics below at that width.
+
 Thompson's rules for breaking lines were never published. The goal, as he explained, was to break each line where a reader might pause — i.e., at the end of a clause or thought.
 
 Similarly, semantic chunks should not be broken arbitrarily; phrases should be maintained, i.e.,
@@ -84,7 +86,7 @@ It makes no sense to break lines in the middle of a phrase, e.g.:
 From the lines in Thompson's bible, these rules:
 
 - Each line begins flush left.
-- A line may not exceed 36 picas; if it does, it must be broken into clauses or other semantic chunks, indicated by
+- A line may not exceed the working measure in [format.md](format.md) (324 pt). If it does, it must be broken into clauses or other semantic chunks, indicated by
   - a comma, parenthesis, bracket, brace, or similar
   - a conjunction, such as
     - and, or, nor
@@ -109,7 +111,7 @@ From the lines in Thompson's bible, these rules:
   - question mark
   - exclamation mark
 - Text on a line may follow a comma.
-- The text of a quote should start on a new line.
+- A quoted clause starts a new line. A quoted word or short phrase stays in the line.
 - Very rarely will there be a reason to have only one word on a line.
 
 

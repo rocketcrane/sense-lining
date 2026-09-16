@@ -8,7 +8,7 @@ Apply every rule.
 
 - One wide sheet of columns, left to right. Not a stack of letter pages.
 - How many columns, and how large the sheet is, follow the text.
-- Width: `48 + 350(N − 1) + 324 + 48`, for N columns.
+- Width: last type-right or last figure-right, plus 48 pt. On a rigid 350 pt stride that is `48 + 350(N − 1) + 324 + 48`. Gutters may stretch (see Figures); then the sheet is wider than that formula.
 - Height: deepest baseline plus 48 pt.
 - The 48 pt margin is measured to baselines, not to ink. The first masthead baseline is `y = 48`. Ascenders may sit in the top margin; descenders of the last line may sit in the bottom margin.
 - Ground: white `#ffffff`. Type: `#111111`.
@@ -37,17 +37,21 @@ Section titles sit one line above the hangline (hangline − 14 pt). Extra title
 
 ## Columns
 
-As many as the text needs. `x = 48 + 350n` for n = 0, 1, 2, … from the left. Columns are consecutive: do not skip an n.
+As many as the text needs. `x = 48 + 350n` for n = 0, 1, 2, … from the left is the minimum stride. Columns are consecutive: do not skip an n.
 
 Reading order: left to right across columns, top to bottom within a column.
 
 - If there is an abstract, it gets its own column (leftmost). Bold label `Abstract` one line above the hangline. Body italic, on the hangline. If there is no abstract, do not leave an empty column for one.
 - Next, the title column: document title, subtitle, authors, journal as the piece has them, then first body on the hangline.
-- Then one section per column. Title one line above the hangline. Body on the hangline.
+- Then further columns left to right.
 
-There is no letter-page height to overflow. Break a long section at a paragraph once its next line would fall on or after the title column’s last baseline, and continue in the next column to the right, on the hangline, with no repeated title. Aim for a shared column depth; do not wait for a page break.
+Fill a column down the sheet. Start the next column when a new headed unit begins — a major section, or a named parallel part that belongs on the hangline — or when this column is already deep and the next paragraph is a good break. A continuation has no repeated title; hangline − 14 is empty, like the title column.
 
-A new subsection may start lower in a column that still has room: title after one blank line, body one blank line under that title.
+A headed column gets its title one line above the hangline (bold for a major section, italic for a named part). Extra title lines expand upward. Body starts on the hangline. In the title column the hangline − 14 slot is empty.
+
+Asides, pull quotes, lists, figures, and epigraphs stay in the flow of the current column. A subsection may start lower in a column that still has room: title after one blank line, body one blank line under that title.
+
+The sheet is tall. Bottoms may be ragged. The title column’s last baseline is not a depth cap; a short column is not padded. A full column is on the order of a hundred lines from the hangline. [Boundary_Objects.pdf](Boundary_Objects.pdf) is the picture: about seventeen columns on a sheet about 36 in / 2600 pt.
 
 ### Title styles
 
@@ -98,6 +102,8 @@ Place a figure in the column where the text calls it out, in the text flow: top 
 Keep the original size relative to the type. If the source is a PDF, measure the printed figure and the body size; display size = printed size × (12 / source body size). Do not stretch every figure to a fixed width. Two column slots are 674 pt (`350 + 324`). A figure that wide spans two slots; a smaller one stays smaller.
 
 Caption under the image, italic, at the column x, one grid step below the image. Type must not run through a figure. If a figure only covers part of a neighboring column’s height, type may sit above and below that band. Do not leave an empty column slot for a figure that is narrower than two column slots.
+
+The 350 pt stride is a minimum. If a figure is wider than 324 pt but its jut into the next column’s type is under about a quarter of 324 pt, start that next column at the figure’s right edge plus 26 pt (the usual gutter) and keep later columns at least 350 pt apart. Type in the neighbor then runs full depth. If the jut is a quarter of the measure or more, the figure occupies that column: type skips the y-band it covers.
 
 If the figure cannot be drawn, one line of roman body type in that column:
 
