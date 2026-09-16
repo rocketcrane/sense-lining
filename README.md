@@ -1,6 +1,6 @@
 # sense-lining
 
-A coding-agent skill that lays out prose as Thompson sense-lines on a Dubberly-style wide column sheet and returns an **SVG** and a matching **PDF**.
+A coding-agent skill that lays out prose as Bradbury Thompson sense-lines on a Hugh Dubberly-style wide column sheet and returns an **SVG** and a matching **PDF**.
 
 The process is [SKILL.md](SKILL.md). Typographic rules are [layout.md](layout.md). Page, type, and SVG rules are [format.md](format.md). The packer is [build_sheet.py](build_sheet.py).
 
