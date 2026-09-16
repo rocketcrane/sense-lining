@@ -2,23 +2,35 @@
 
 ![Licklider sheet](licklider.png)
 
-A coding-agent skill that lays out prose as Bradbury Thompson sense-lines on a Hugh Dubberly-style wide column sheet and returns an **SVG** and a matching **PDF**.
+A coding agent skill.
 
-The process is [SKILL.md](SKILL.md). Typographic rules are [layout.md](layout.md). Page, type, and SVG rules are [format.md](format.md). The packer is [build_sheet.py](build_sheet.py).
+Lays out prose as Bradbury Thompson sense-lines 
+
+on a Hugh Dubberly-style wide column sheet. 
+
+Returns an **SVG** and a matching **PDF**.
+
+The process is [SKILL.md](SKILL.md). 
+
+Typographic rules are [layout.md](layout.md). 
+
+Page, type, and SVG rules are [format.md](format.md). 
+
+The packer is [build_sheet.py](build_sheet.py).
 
 ## Use with a coding agent
 
-1. Give the agent this directory (clone, or point it at the skill files).
-2. Give it a source (PDF, URL, or pasted text) and ask it to use this skill to lay out the text.
-4. Take the SVG and PDF it writes.
-
-It uses Python 3 and PyMuPDF for packing and PDF.
+1. Give the agent this directory (the repo URL, or download it).
+2. Give it a source text. A PDF is fine.
+3. Ask it to use this skill to lay out the text.
 
 ## Input
 
 Any source the agent can read: PDF, web page, or already-clean text.
 
-The agent produces two intermediates (skip clean if the source is already clean):
+The agent produces two intermediates:
+
+(It skips name_clean.txt if the source is already clean):
 
 | File | What it is |
 | --- | --- |
