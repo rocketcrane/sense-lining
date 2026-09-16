@@ -51,7 +51,7 @@ A headed column gets its title one line above the hangline (bold for a major sec
 
 Asides, pull quotes, lists, figures, and epigraphs stay in the flow of the current column. A subsection may start lower in a column that still has room: title after one blank line, body one blank line under that title.
 
-The sheet is tall. Bottoms may be ragged. The title column’s last baseline is not a depth cap; a short column is not padded. A full column is on the order of a hundred lines from the hangline. [Boundary_Objects.pdf](Boundary_Objects.pdf) is the picture: about seventeen columns on a sheet about 36 in / 2600 pt.
+The sheet is tall. Bottoms may be ragged. The title column’s last baseline is not a depth cap; a short column is not padded. A full column is on the order of a hundred lines from the hangline. About seventeen columns on a sheet about 36 in / 2600 pt.
 
 ### Title styles
 

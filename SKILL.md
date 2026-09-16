@@ -13,7 +13,7 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 
 ## Steps
 
-1. **Look.** layout.md, then format.md, in full. Then [Boundary_Objects.pdf](Boundary_Objects.pdf) for column density.
+1. **Look.** layout.md, then format.md, in full.
    Done when those files have been read.
 
 2. **Clean source.** Extract to `name_clean.txt`: heads, body, figure callouts, lists, quotes. Rejoin hyphenation. Strip page furniture. Drop the bibliography; keep inline reference numbers. If the source is already clean, skip this. A text layer is not the same as clean text. Note every cleanup. Leave paragraphs intact; this file is not yet lined.
@@ -33,7 +33,7 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 
 7. **Check.**
    - Every body line on the sheet is a line from `name_lines.txt`; every column on the sheet is a `=column` in that file.
-   - Teens of columns on a tall sheet (on the order of [Boundary_Objects.pdf](Boundary_Objects.pdf), ~2000–2700 pt high), not thirty columns on a 900 pt strip.
+   - Teens of columns on a tall sheet (~2000–2700 pt high), not thirty columns on a 900 pt strip.
    - No line longer than 324 pt at 12 pt.
    - Section titles (and Abstract, if any) one line above the hangline; title-column hangline − 14 empty.
    - Columns consecutive; no empty slot.
