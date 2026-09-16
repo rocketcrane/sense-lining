@@ -538,6 +538,8 @@ if __name__ == "__main__":
         text = " ".join(sys.argv[3:])
         print(f"{line_width(text, base):.2f}  {text}")
         sys.exit(0)
-    names = sys.argv[1:] or ["meadows", "licklider"]
+    names = sys.argv[1:]
+    if not names:
+        sys.exit("usage: build_sheet.py NAME ...")
     for name in names:
         main(name)

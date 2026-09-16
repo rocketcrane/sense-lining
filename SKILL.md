@@ -13,7 +13,7 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 
 ## Steps
 
-1. **Look.** layout.md, then format.md, in full. Then [Boundary_Objects.pdf](Boundary_Objects.pdf) for column density. Then one worked trio: [licklider_clean.txt](licklider_clean.txt), [licklider_lines.txt](licklider_lines.txt), [licklider.pdf](licklider.pdf) — markers, fill, and the sheet they produce. (Meadows is the same trio under `meadows_*`.)
+1. **Look.** layout.md, then format.md, in full. Then [Boundary_Objects.pdf](Boundary_Objects.pdf) for column density.
    Done when those files have been read.
 
 2. **Clean source.** Extract to `name_clean.txt`: heads, body, figure callouts, lists, quotes. Rejoin hyphenation. Strip page furniture. Drop the bibliography; keep inline reference numbers. If the source is already clean, skip this. A text layer is not the same as clean text. Note every cleanup. Leave paragraphs intact; this file is not yet lined.
@@ -22,8 +22,8 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 3. **Hangline.** Decide whether an abstract column exists and what the masthead is. Set the hangline from the masthead as format.md states.
    Done when the hangline is a number.
 
-4. **Sense lines and columns.** Read the clean file through. Write `name_lines.txt`. One line in that file is one line of type. Break where a reader pauses, per layout.md. Measure a drafted line only to see whether it fits 324 pt at the indent it will have; if it does not, rewrite it. Use the same markers as [licklider_lines.txt](licklider_lines.txt) (`=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`). Fill one column at a time. Start a column when a hangline heading begins, or when this column is already deep and the next paragraph is a good break. Asides, quotes, lists, and figures stay in the current column (`=subsection` in the flow).
-   Done when `name_lines.txt` exists, every body line in it is a line you wrote, and opening it next to `licklider_lines.txt` would not surprise you about how often `=column` appears.
+4. **Sense lines and columns.** Read the clean file through. Write `name_lines.txt`. One line in that file is one line of type. Break where a reader pauses, per layout.md. Measure a drafted line only to see whether it fits 324 pt at the indent it will have; if it does not, rewrite it. Markers: `=title`, `=authors`, `=journal`, `=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. Fill one column at a time. Start a column when a hangline heading begins, or when this column is already deep and the next paragraph is a good break. Asides, quotes, lists, and figures stay in the current column (`=subsection` in the flow).
+   Done when `name_lines.txt` exists, every body line in it is a line you wrote, and `=column` is infrequent — teens of columns on a tall sheet, not a new column every few lines.
 
 5. **Figures.** At each callout, place in the text flow at the source size ratio in format.md. If the source is a PDF, clip the printed bbox from the page pixmap, not from raw image xrefs. If there is no printed size, leave the figure at its native size relative to the type. If the drawing cannot be recovered, the omit line in format.md.
    Done when every callout is either a sized image in flow or an omit line.

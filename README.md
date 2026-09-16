@@ -6,7 +6,7 @@ The process is [SKILL.md](SKILL.md). Typographic rules are [layout.md](layout.md
 
 ## Do other people need another folder?
 
-No, if they clone this repo and tell the agent to follow `SKILL.md`. Keep the files together: the skill, `layout.md`, `format.md`, `build_sheet.py`, and the worked examples.
+No, if they clone this repo and tell the agent to follow `SKILL.md`. Keep the files together: the skill, `layout.md`, `format.md`, `build_sheet.py`, and `Boundary_Objects.pdf`.
 
 Yes, if they want the agent to **discover** the skill without being told:
 
@@ -25,7 +25,7 @@ Do not put only `SKILL.md` in that folder. The agent must still read the sibling
 
 Python 3 and PyMuPDF (`pip install pymupdf`) for packing and PDF.
 
-Worked trios to copy: `licklider_clean.txt` / `licklider_lines.txt` / `licklider.pdf`, and the same for Meadows. Column density: `Boundary_Objects.pdf`.
+Column density: `Boundary_Objects.pdf`.
 
 ## Input
 
@@ -36,7 +36,7 @@ The agent produces two intermediates (skip clean if the source is already clean)
 | File | What it is |
 | --- | --- |
 | `name_clean.txt` | Recoverable article: heads, body, figure callouts, lists, quotes. No OCR debris, page furniture, or bibliography. Inline `[n]` kept. Paragraphs intact, not yet lined. |
-| `name_lines.txt` | One file line = one line of type. Markers as in `licklider_lines.txt` (`=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`). |
+| `name_lines.txt` | One file line = one line of type. Markers: `=title`, `=authors`, `=journal`, `=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. |
 
 ## Output
 
