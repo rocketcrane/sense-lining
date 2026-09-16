@@ -4,9 +4,10 @@
 
 A coding agent skill.
 
-Lays out prose as Bradbury Thompson sense-lines 
+It lays out prose as Bradbury Thompson sense-lines 
 
-on a Hugh Dubberly-style wide column sheet. 
+on a Hugh Dubberly-style wide column sheet.
+
 
 Returns an **SVG** and a matching **PDF**.
 
@@ -30,7 +31,7 @@ Any source the agent can read: PDF, web page, or already-clean text.
 
 The agent produces two intermediates:
 
-(It skips name_clean.txt if the source is already clean):
+(It skips name_clean.txt if the source is already clean)
 
 | File | What it is |
 | --- | --- |
@@ -43,6 +44,7 @@ The agent produces two intermediates:
 | --- | --- |
 | `name.svg` | One sheet: computed width × height in points |
 | `name.pdf` | That drawing, one page, same point size |
+
 
 Returned document = main text + figures in the flow. No bibliography.
 
