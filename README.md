@@ -31,4 +31,5 @@ The agent produces two intermediates (skip clean if the source is already clean)
 | `name.svg` | One sheet: computed width × height in points |
 | `name.pdf` | That drawing, one page, same point size |
 
-Returned document = main text + figures in the flow. No bibliography. Inline reference numbers stay as 7 pt superscripts. Type is 12 pt. No line longer than 324 pt.
+Returned document = main text + figures in the flow. No bibliography. 
+Inline reference numbers stay as 7 pt superscripts. Type is 12 pt. No line longer than 324 pt.
