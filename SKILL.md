@@ -1,9 +1,9 @@
 ---
-name: thompson-dubberly-layout
+name: sense-lining
 description: Lays out prose as Thompson sense-lines on a Dubberly-style wide column sheet and returns one SVG plus a matching PDF. Use when laying out a paper, article, or other text typographically.
 ---
 
-# Thompson–Dubberly layout
+# sense-lining
 
 Read [layout.md](layout.md) and [format.md](format.md) in full before you start. Those files are the rules. This file is the process.
 
