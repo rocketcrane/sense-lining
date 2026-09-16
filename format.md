@@ -45,13 +45,15 @@ Reading order: left to right across columns, top to bottom within a column.
 - Next, the title column: document title, subtitle, authors, journal as the piece has them, then first body on the hangline.
 - Then further columns left to right.
 
-Fill a column down the sheet. Start the next column when a new headed unit begins — a major section, or a named parallel part that belongs on the hangline — or when this column is already deep and the next paragraph is a good break. A continuation has no repeated title; hangline − 14 is empty, like the title column.
+Fill a column down the sheet. Start the next column when a new headed unit begins — a major section, or a named parallel part — or when this column is already deep and the next paragraph is a good break. A continuation has no repeated title; hangline − 14 is empty, like the title column.
 
 A headed column gets its title one line above the hangline (bold for a major section, italic for a named part). Extra title lines expand upward. Body starts on the hangline. In the title column the hangline − 14 slot is empty.
 
-Asides, pull quotes, lists, figures, and epigraphs stay in the flow of the current column. A subsection may start lower in a column that still has room: title after one blank line, body one blank line under that title.
+A named parallel part is a source title the reader would look up (Means-Ends Analysis, Schemes for Guiding Search). Same-weight heads in the source are hangline parts even if the outline looks nested. Source heading level is not layout level.
 
-The sheet is tall. Bottoms may be ragged. The title column’s last baseline is not a depth cap; a short column is not padded. A full column is on the order of a hundred lines from the hangline. About seventeen columns on a sheet about 36 in / 2600 pt.
+Pull quotes, lists, figures, and epigraphs stay in the flow of the current column. Mid-column italic (`=subsection`) is the exception: a head that only makes sense under this column’s title, or a short labeled beat that would leave a stub column.
+
+The sheet is tall. Bottoms may be ragged. The title column’s last baseline is not a depth cap; a short column is not padded. A full column is on the order of a hundred lines from the hangline. Column count follows the headed units.
 
 ### Title styles
 
@@ -59,7 +61,8 @@ The sheet is tall. Bottoms may be ragged. The title column’s last baseline is 
 - Authors: roman. Journal / publication: italic.
 - Abstract label: bold. Abstract body: italic.
 - Major / top-level section: bold roman.
-- Subsection: italic, not bold.
+- Named parallel part: italic, hangline.
+- Subsection (true subordinate, mid-column): italic, not bold.
 - If a parent heading and its first child share a column, stack them above the hangline (parent above child). Extra lines expand up.
 
 

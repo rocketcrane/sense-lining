@@ -22,8 +22,8 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 3. **Hangline.** Decide whether an abstract column exists and what the masthead is. Set the hangline from the masthead as format.md states.
    Done when the hangline is a number.
 
-4. **Sense lines and columns.** Read the clean file through. Write `name_lines.txt`. One line in that file is one line of type. Break where a reader pauses, per layout.md. Measure a drafted line only to see whether it fits 324 pt at the indent it will have; if it does not, rewrite it. Markers: `=title`, `=authors`, `=journal`, `=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. Fill one column at a time. Start a column when a hangline heading begins, or when this column is already deep and the next paragraph is a good break. Asides, quotes, lists, and figures stay in the current column (`=subsection` in the flow).
-   Done when `name_lines.txt` exists, every body line in it is a line you wrote, and `=column` is infrequent — teens of columns on a tall sheet, not a new column every few lines.
+4. **Sense lines and columns.** Read the clean file through. Write `name_lines.txt`. One line in that file is one line of type. Break where a reader pauses, per layout.md. Measure a drafted line only to see whether it fits 324 pt at the indent it will have; if it does not, rewrite it. Markers: `=title`, `=authors`, `=journal`, `=column`, `=section`, `=aside`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. Fill one column at a time. Start a column when a named head in the source begins (`=column`, then `=section` for a major unit or `=aside` for a named part), or when this column is already deep and the next paragraph is a good break. Quotes, lists, and figures stay in the current column. `=subsection` only for a true subordinate that would leave a stub column.
+   Done when `name_lines.txt` exists, every body line in it is a line you wrote, and each named head in the source has a column (plus overflow as needed).
 
 5. **Figures.** At each callout, place in the text flow at the source size ratio in format.md. If the source is a PDF, clip the printed bbox from the page pixmap, not from raw image xrefs. If there is no printed size, leave the figure at its native size relative to the type. If the drawing cannot be recovered, the omit line in format.md.
    Done when every callout is either a sized image in flow or an omit line.
@@ -33,9 +33,9 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 
 7. **Check.**
    - Every body line on the sheet is a line from `name_lines.txt`; every column on the sheet is a `=column` in that file.
-   - Teens of columns on a tall sheet (~2000–2700 pt high), not thirty columns on a 900 pt strip.
+   - Columns follow headed units in the source, plus overflow. Fill toward ~100 lines / ~2000–2700 pt high; do not hide named heads mid-column to keep the count small. Not thirty columns on a 900 pt strip.
    - No line longer than 324 pt at 12 pt.
-   - Section titles (and Abstract, if any) one line above the hangline; title-column hangline − 14 empty.
+   - Hangline titles (section, named part, Abstract) one line above the hangline; title-column hangline − 14 empty.
    - Columns consecutive; no empty slot.
    - Figures not stretched to a slot width.
    - Bibliography absent; inline cues kept as 7 pt superscripts.
