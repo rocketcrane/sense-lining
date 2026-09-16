@@ -1,31 +1,17 @@
-# Thompson–Dubberly layout
+# sense-lining
 
 A coding-agent skill that lays out prose as Thompson sense-lines on a Dubberly-style wide column sheet and returns **one SVG** and a matching **PDF**.
 
 The process is [SKILL.md](SKILL.md). Typographic rules are [layout.md](layout.md). Page, type, and SVG rules are [format.md](format.md). The packer is [build_sheet.py](build_sheet.py).
 
-## Do other people need another folder?
-
-No, if they clone this repo and tell the agent to follow `SKILL.md`. Keep the files together: the skill, `layout.md`, `format.md`, `build_sheet.py`, and `Boundary_Objects.pdf`.
-
-Yes, if they want the agent to **discover** the skill without being told:
-
-- Cursor project skill: copy the skill files into `.cursor/skills/thompson-dubberly-layout/`
-- Cursor personal skill (all projects): `~/.cursor/skills/thompson-dubberly-layout/`
-- Other agents: their own skills directory, same contents, or `@SKILL.md` in the prompt
-
-Do not put only `SKILL.md` in that folder. The agent must still read the sibling files from this repo.
-
 ## Use with a coding agent
 
 1. Give the agent this directory (clone, or point it at the skill files).
 2. Give it a source (PDF, URL, or pasted text).
-3. Ask it to use this skill to lay out the text, e.g. `Use thompson-dubberly-layout on this paper.`
+3. Ask it to use this skill to lay out the text, e.g. `Use sense-lining on this paper.`
 4. Take the SVG and PDF it writes.
 
-Python 3 and PyMuPDF (`pip install pymupdf`) for packing and PDF.
-
-Column density: `Boundary_Objects.pdf`.
+It uses Python 3 and PyMuPDF (`pip install pymupdf`) for packing and PDF.
 
 ## Input
 
