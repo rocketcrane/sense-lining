@@ -29,6 +29,10 @@ The packer is [build_sheet.py](build_sheet.py).
 
 Any source the agent can read: PDF, web page, or already-clean text.
 
+If a PDF has no machine-readable text, 
+
+the agent will suggest options for creating a machine-readable text layer.
+
 The agent produces two intermediates:
 
 (It skips name_clean.txt if the source is already clean)
