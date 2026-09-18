@@ -11,13 +11,10 @@ on a Hugh Dubberly-style wide column sheet.
 
 Returns an **SVG** and a matching **PDF**.
 
-The process is [SKILL.md](SKILL.md). 
 
-Typographic rules are [layout.md](layout.md). 
+Expect this skill to take 10 minutes to process an average-length academic paper.
 
-Page, type, and SVG rules are [format.md](format.md). 
-
-The packer is [build_sheet.py](build_sheet.py).
+Many figures and images, or a lack of machine-readable text can increase processing time.
 
 ## Use with a coding agent
 
