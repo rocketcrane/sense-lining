@@ -27,7 +27,7 @@ Runtime typographic rules live in [layout.md](layout.md). Page, type, and SVG ru
 
 ## Technical objects
 
-- **PDF text extraction.** Efficient, effective way to get text out of PDFs that have no OCR text. May involve an OCR system, or reading the PDF with the visual part of the agent model.
+- **PDF text extraction.** PyMuPDF `get_text()`. If a PDF has no text layer, stop and tell the user how to add one: Preview Embed Text on macOS; OCRmyPDF elsewhere, when the OS supports it. Reading page rasters with the model only if those are unavailable; not recommended.
 - **OCR cleanup.** Further processing of extracted text, since PDF OCR text is often riddled with errors. Skip this when the given text is already clean.
 - **Semantic layout.** The agent writes two text files: a paragraph clean file, then a sense-lined file (line-breaks, column starts, sections, lists, quotes, figure callouts) by applying [layout.md](layout.md) and [format.md](format.md). Measuring those lines, packing the declared columns, placing figures at their measured size, emitting SVG, and making the PDF may be code. Packing places each line and each column as written.
 - **Output format rules.** Specified in [format.md](format.md).
