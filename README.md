@@ -14,7 +14,7 @@ Returns an **SVG** and a matching **PDF**.
 
 Expect this skill to take 10 minutes to process an average-length academic paper.
 
-Many figures and images, or a lack of machine-readable text can increase processing time.
+Many figures and images, or a lack of machine-readable text, can increase processing time.
 
 ## Use with a coding agent
 
