@@ -37,7 +37,7 @@ The agent produces two intermediates:
 | File | What it is |
 | --- | --- |
 | `name_clean.txt` | Recoverable article: heads, body, figure callouts, lists, quotes. No OCR debris, page furniture, or bibliography. Inline `[n]` kept. Paragraphs intact, not yet lined. |
-| `name_lines.txt` | One file line = one line of type. Markers: `=title`, `=authors`, `=journal`, `=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. |
+| `name_lines.txt` | One file line = one line of type. Markers: `=title`, `=subtitle`, `=authors`, `=journal`, `=abstract`, `=column`, `=section`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. |
 
 ## Output
 

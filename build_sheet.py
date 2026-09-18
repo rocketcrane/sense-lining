@@ -2,7 +2,10 @@
 """Place a sense-lined file onto the format.md grid.
 
 One source line is one line of type. =column starts a column.
-Does not choose breaks.
+=abstract is its own leftmost column. Does not choose breaks.
+
+Inline marks: *italic*, [n] superscript, {c}concept{/c} lime,
+{s}sentence{/s} yellow. Nested {s}…{c}…{/c}…{/s} overlays.
 """
 
 from __future__ import annotations
@@ -29,45 +32,11 @@ FONT_ROMAN = pymupdf.Font("times-roman")
 FONT_ITALIC = pymupdf.Font("times-italic")
 FONT_BOLD = pymupdf.Font("times-bold")
 
-PAPERS = {
-    "meadows": {
-        "lines": ROOT / "meadows_lines.txt",
-        "figdir": ROOT / "figures",
-        "svg": ROOT / "meadows.svg",
-        "pdf": ROOT / "meadows.pdf",
-        "scale": 12.0 / 11.0,
-        "figs": {
-            "fig1.png": (330.0, 65.0),
-            "fig2.png": (174.0, 63.0),
-            "fig3.png": (328.0, 101.0),
-            "fig4.png": (330.0, 116.0),
-            "fig5.png": (328.0, 69.0),
-            "fig6.png": (270.0, 171.0),
-            "fig7.png": (318.0, 394.0),
-            "fig8.png": (214.0, 257.0),
-            "fig9.png": (336.0, 182.0),
-            "fig10.png": (342.0, 132.0),
-            "fig11.png": (320.0, 195.0),
-            "fig12.png": (206.0, 122.0),
-            "fig13.png": (327.0, 190.0),
-            "fig14.png": (212.0, 133.0),
-        },
-    },
-    "licklider": {
-        "lines": ROOT / "licklider_lines.txt",
-        "figdir": ROOT / "figures",
-        "svg": ROOT / "licklider.svg",
-        "pdf": ROOT / "licklider.pdf",
-        "scale": 12.0 / 10.7932,
-        "figs": {
-            "mental.png": (338.7, 146.2),
-            "meeting.png": (298.6, 224.2),
-            "arousal.png": (337.5, 107.8),
-            "dialog.png": (293.7, 126.5),
-            "filibuster.png": (339.9, 174.7),
-            "oliver.png": (204.3, 179.5),
-        },
-    },
+MASTHEAD = {
+    "=title": ("bold", "bold"),
+    "=subtitle": ("roman", None),
+    "=authors": ("roman", None),
+    "=journal": ("italic", "italic"),
 }
 
 
@@ -82,40 +51,63 @@ def measure(text: str, style: str, size: float = 12.0) -> float:
 class Span:
     text: str
     style: str
+    hl: frozenset[str] = field(default_factory=frozenset)
+
+
+MARK = re.compile(
+    r"\{(/?)([cs])\}|\[(\d+)\]|\*([^*]+)\*|“([^”]*)”|\"([^\"]*)\""
+)
+
+
+def _pop_hl(stack: list[str], kind: str) -> None:
+    for i in range(len(stack) - 1, -1, -1):
+        if stack[i] == kind:
+            stack.pop(i)
+            return
 
 
 def stylize(text: str, base: str = "roman") -> list[Span]:
     spans: list[Span] = []
-    pattern = re.compile(r"\[(\d+)\]|\*([^*]+)\*|“([^”]*)”|\"([^\"]*)\"")
+    stack: list[str] = []
     pos = 0
-    for m in pattern.finditer(text):
+
+    def add(t: str, style: str) -> None:
+        if t:
+            spans.append(Span(t, style, frozenset(stack)))
+
+    for m in MARK.finditer(text):
         if m.start() > pos:
-            spans.append(Span(text[pos : m.start()], base))
-        if m.group(1) is not None:
-            spans.append(Span(m.group(1), "super"))
-        elif m.group(2) is not None:
-            spans.append(Span(m.group(2), "italic" if base == "roman" else base))
+            add(text[pos : m.start()], base)
+        if m.group(2) is not None:
+            if m.group(1):
+                _pop_hl(stack, m.group(2))
+            else:
+                stack.append(m.group(2))
+        elif m.group(3) is not None:
+            add(m.group(3), "super")
+        elif m.group(4) is not None:
+            add(m.group(4), "italic" if base == "roman" else base)
         else:
-            inner = m.group(3) if m.group(3) is not None else m.group(4)
-            lq, rq = ("“", "”") if m.group(3) is not None else ('"', '"')
-            spans.append(Span(lq, base))
+            inner = m.group(5) if m.group(5) is not None else m.group(6)
+            lq, rq = ("“", "”") if m.group(5) is not None else ('"', '"')
+            add(lq, base)
             if inner:
-                spans.append(Span(inner, "italic" if base == "roman" else base))
-            spans.append(Span(rq, base))
+                add(inner, "italic" if base == "roman" else base)
+            add(rq, base)
         pos = m.end()
     if pos < len(text):
-        spans.append(Span(text[pos:], base))
+        add(text[pos:], base)
     return [s for s in spans if s.text]
 
 
+def one_span_width(s: Span) -> float:
+    if s.style == "super":
+        return measure(s.text, "roman", 7.0)
+    return measure(s.text, s.style, 12.0)
+
+
 def span_width(spans: list[Span]) -> float:
-    w = 0.0
-    for s in spans:
-        if s.style == "super":
-            w += measure(s.text, "roman", 7.0)
-        else:
-            w += measure(s.text, s.style, 12.0)
-    return w
+    return sum(one_span_width(s) for s in spans)
 
 
 def esc(s: str) -> str:
@@ -147,20 +139,28 @@ class Column:
     items: list[Placed] = field(default_factory=list)
 
 
+def image_pt(path: Path) -> tuple[float, float]:
+    pix = pymupdf.Pixmap(path)
+    xr = pix.xres if pix.xres else 72
+    yr = pix.yres if pix.yres else 72
+    return pix.width * 72.0 / xr, pix.height * 72.0 / yr
+
+
 class Sheet:
-    def __init__(self, figdir: Path, fig_print: dict, fig_scale: float) -> None:
+    def __init__(self, figdir: Path, has_abstract: bool = False) -> None:
+        self.title_n = 1 if has_abstract else 0
         self.cols: list[Column] = [Column(n=0, y=FIRST_Y, x=MARGIN)]
-        self.i = 0
+        if has_abstract:
+            self.cols.append(Column(n=1, y=FIRST_Y, x=MARGIN + COL_STRIDE))
+        self.i = self.title_n
         self.deepest = FIRST_Y
         self.hang = 0.0
         self.title_y = 0.0
         self.masthead_y = FIRST_Y
         self.figdir = figdir
-        self.fig_print = fig_print
-        self.fig_scale = fig_scale
         self.head_lines: list[tuple[str, str]] = []
         self.body_column_open = False
-        self.next_n = 0  # (kind, text) stacked at next column start
+        self.next_n = 0
 
     def col(self) -> Column:
         return self.cols[self.i]
@@ -222,16 +222,17 @@ class Sheet:
         last = self.masthead_y - LEADING
         self.hang = last + 2 * LEADING
         self.title_y = self.hang - LEADING
-        self.cols[0].y = self.hang
+        for c in self.cols:
+            if c.n <= self.title_n:
+                c.y = self.hang
 
     def start_column(self) -> Column:
-        if self.hang < 1:
-            raise RuntimeError("=column before masthead")
         if not self.body_column_open:
+            self.flush_heads()
             self.body_column_open = True
-            self.i = 0
-            self.next_n = 1
-            c = self.cols[0]
+            self.i = self.title_n
+            self.next_n = self.title_n + 1
+            c = self.cols[self.i]
             c.y = self.clear_y(c, self.hang)
             return c
         self.flush_heads()
@@ -258,7 +259,7 @@ class Sheet:
         c.y = self.clear_y(c, self.hang)
 
     def add_masthead(self, text: str, style: str, whole: str | None) -> None:
-        c = self.cols[0]
+        c = self.cols[self.title_n]
         y = self.masthead_y
         c.items.append(Placed(x=c.x, y=y, spans=stylize(text, style), whole=whole))
         self.deepest = max(self.deepest, y)
@@ -284,18 +285,28 @@ class Sheet:
         self.add_line(0.0, text, "italic", "italic")
         self.add_blank()
 
-    def place_figure(self, num: int, img_name: str | None, caption_lines: list[str]) -> None:
+    def find_image(self, img_name: str) -> Path | None:
+        for p in (self.figdir / img_name, self.figdir.parent / img_name):
+            if p.is_file():
+                return p
+        return None
+
+    def place_figure(
+        self,
+        num: int,
+        img_name: str | None,
+        caption_lines: list[str],
+        size: tuple[float, float] | None = None,
+    ) -> None:
         self.flush_heads()
-        img_path = self.figdir / img_name if img_name else None
-        if not (img_path and img_path.exists() and img_name in self.fig_print):
+        img_path = self.find_image(img_name) if img_name else None
+        if not img_path:
             self.add_line(0.0, f"FIGURE {num} [diagram omitted]")
             for line in caption_lines:
                 self.add_line(0.0, line, "italic", "italic")
             self.add_blank()
             return
-        print_w, print_h = self.fig_print[img_name]
-        img_w = print_w * self.fig_scale
-        img_h = print_h * self.fig_scale
+        img_w, img_h = size if size else image_pt(img_path)
         left = self.col()
         y_top = self.clear_y(left, left.y)
         left.items.append(
@@ -314,18 +325,39 @@ class Sheet:
         self.deepest = max(self.deepest, y_top + img_h, cap_y - LEADING)
 
 
+def _take_masthead(lines: list[str], i: int, sheet: Sheet | None) -> int:
+    style, whole = MASTHEAD[lines[i].rstrip()]
+    i += 1
+    text = lines[i].rstrip() if i < len(lines) else ""
+    if sheet is not None:
+        sheet.add_masthead(text, style, whole)
+    return i + 1 if i < len(lines) else i
+
+
 def parse_and_place(path: Path, sheet: Sheet) -> None:
     lines = path.read_text().splitlines()
     i = 0
+    while i < len(lines):
+        if lines[i].rstrip() in MASTHEAD:
+            i = _take_masthead(lines, i, sheet)
+        else:
+            i += 1
+    sheet.freeze_hang()
+
+    i = 0
     mode = "body"
-    hang_ready = False
     started = False
     pending_fig: dict | None = None
 
     def finish_fig() -> None:
         nonlocal pending_fig
         if pending_fig is not None:
-            sheet.place_figure(pending_fig["n"], pending_fig["image"], pending_fig["caption"])
+            sheet.place_figure(
+                pending_fig["n"],
+                pending_fig["image"],
+                pending_fig["caption"],
+                pending_fig["size"],
+            )
             pending_fig = None
 
     while i < len(lines):
@@ -333,26 +365,17 @@ def parse_and_place(path: Path, sheet: Sheet) -> None:
         line = raw.rstrip()
         if line.startswith("="):
             finish_fig()
-            if line == "=title":
-                i += 1
-                sheet.add_masthead(lines[i].rstrip(), "bold", "bold")
-            elif line == "=subtitle":
-                i += 1
-                sheet.add_masthead(lines[i].rstrip(), "roman", None)
-            elif line == "=authors":
-                i += 1
-                sheet.add_masthead(lines[i].rstrip(), "roman", None)
-            elif line == "=journal":
-                i += 1
-                sheet.add_masthead(lines[i].rstrip(), "italic", "italic")
-                sheet.freeze_hang()
-                hang_ready = True
+            if line in MASTHEAD:
+                i = _take_masthead(lines, i, None)
+                continue
             elif line == "=body":
                 pass
+            elif line == "=abstract":
+                sheet.i = 0
+                sheet.head_lines.append(("section", "Abstract"))
+                started = True
+                mode = "abstract"
             elif line == "=column":
-                if not hang_ready:
-                    raise RuntimeError("=column before journal/masthead")
-                finish_fig()
                 sheet.start_column()
                 started = True
                 mode = "body"
@@ -382,10 +405,11 @@ def parse_and_place(path: Path, sheet: Sheet) -> None:
             elif line == "=list":
                 mode = "list"
             elif line.startswith("=figure "):
-                rest = line[len("=figure ") :].strip().split(None, 1)
+                rest = line[len("=figure ") :].strip().split()
                 pending_fig = {
                     "n": int(rest[0]),
                     "image": rest[1] if len(rest) > 1 else None,
+                    "size": (float(rest[2]), float(rest[3])) if len(rest) >= 4 else None,
                     "caption": [],
                 }
                 mode = "caption"
@@ -398,7 +422,8 @@ def parse_and_place(path: Path, sheet: Sheet) -> None:
             finish_fig()
             if started:
                 sheet.add_blank()
-            mode = "body"
+            if mode != "abstract":
+                mode = "body"
             i += 1
             continue
 
@@ -423,12 +448,64 @@ def parse_and_place(path: Path, sheet: Sheet) -> None:
                 if not text.startswith("–"):
                     text = "– " + text
                 sheet.add_line(28.0, text)
+        elif mode == "abstract":
+            sheet.add_line(0.0, line.strip(), "italic", "italic")
         else:
             sheet.add_line(0.0, line.strip())
         i += 1
 
     finish_fig()
     sheet.flush_heads()
+
+
+HL_FILL = {
+    "s": ("#ffe44d", 0.58),
+    "c": ("#9aff00", 0.55),
+}
+HL_BOX = {
+    "s": (-11.4, 14.4),
+    "c": (-10.2, 12.6),
+}
+
+
+def highlight_svg(p: Placed) -> list[str]:
+    parts: list[str] = []
+    for kind in ("s", "c"):
+        if not any(kind in s.hl for s in p.spans):
+            continue
+        fill, op = HL_FILL[kind]
+        dy, h = HL_BOX[kind]
+        x = p.x
+        run_x: float | None = None
+        run_w = 0.0
+
+        def flush() -> None:
+            nonlocal run_x, run_w
+            if run_x is None or run_w <= 0:
+                run_x = None
+                run_w = 0.0
+                return
+            parts.append(
+                f'    <rect x="{run_x - 1.2:.1f}" y="{p.y + dy:.1f}" '
+                f'width="{run_w + 2.4:.1f}" height="{h:.1f}" '
+                f'rx="1.2" fill="{fill}" fill-opacity="{op}"/>'
+            )
+            run_x = None
+            run_w = 0.0
+
+        for s in p.spans:
+            w = one_span_width(s)
+            if kind in s.hl:
+                if run_x is None:
+                    run_x = x
+                    run_w = w
+                else:
+                    run_w += w
+            else:
+                flush()
+            x += w
+        flush()
+    return parts
 
 
 def svg_text(p: Placed) -> str:
@@ -482,6 +559,7 @@ def emit_svg(cols: list[Column], deepest: float) -> str:
                     f'height="{p.img_h:.1f}" href="data:image/png;base64,{b64}"/>'
                 )
             else:
+                parts.extend(highlight_svg(p))
                 parts.append(svg_text(p))
     parts.append("  </g>")
     parts.append("</svg>")
@@ -510,26 +588,85 @@ def audit(cols: list[Column], hang: float) -> None:
         print(" ONE ", row[0], row[2])
 
 
+def resolve_lines(name: str) -> Path:
+    p = Path(name)
+    if p.is_file():
+        return p.resolve()
+    stem = p.name.removesuffix("_lines.txt").removesuffix(".txt")
+    for c in (Path(f"{stem}_lines.txt"), ROOT / f"{stem}_lines.txt"):
+        if c.is_file():
+            return c.resolve()
+    raise SystemExit(f"no lines file for {name}")
+
+
+def output_stem(lines_path: Path) -> str:
+    s = lines_path.stem
+    return s[: -len("_lines")] if s.endswith("_lines") else s
+
+
 def main(name: str) -> None:
-    cfg = PAPERS[name]
-    sheet = Sheet(cfg["figdir"], cfg["figs"], cfg["scale"])
-    parse_and_place(cfg["lines"], sheet)
+    lines_path = resolve_lines(name)
+    figdir = lines_path.parent / "figures"
+    if not figdir.is_dir():
+        figdir = lines_path.parent
+    has_abs = any(l.rstrip() == "=abstract" for l in lines_path.read_text().splitlines())
+    sheet = Sheet(figdir, has_abstract=has_abs)
+    parse_and_place(lines_path, sheet)
+    stem = output_stem(lines_path)
+    svg_path = lines_path.with_name(stem + ".svg")
+    pdf_path = lines_path.with_name(stem + ".pdf")
     audit(sheet.cols, sheet.hang)
     svg = emit_svg(sheet.cols, sheet.deepest)
-    cfg["svg"].write_text(svg)
-    print("wrote", cfg["svg"], "bytes", cfg["svg"].stat().st_size)
+    svg_path.write_text(svg)
+    print("wrote", svg_path, "bytes", svg_path.stat().st_size)
     doc = pymupdf.open(stream=svg.encode("utf-8"), filetype="svg")
-    cfg["pdf"].write_bytes(doc.convert_to_pdf())
+    pdf_path.write_bytes(doc.convert_to_pdf())
     print(
         "wrote",
-        cfg["pdf"],
+        pdf_path,
         "bytes",
-        cfg["pdf"].stat().st_size,
+        pdf_path.stat().st_size,
         "page",
         doc[0].rect,
         "deepest",
         f"{sheet.deepest:.1f}",
     )
+
+
+def _plain(p: Placed) -> str:
+    return "".join(s.text for s in p.spans)
+
+
+def _check() -> None:
+    import tempfile
+
+    td = Path(tempfile.mkdtemp())
+    preprint = td / "preprint_lines.txt"
+    preprint.write_text("=title\nHello\n=authors\nA. A\n\n=column\nBody line here.\n")
+    sheet = Sheet(td)
+    parse_and_place(preprint, sheet)
+    assert sheet.hang == 90.0, sheet.hang
+    assert len(sheet.cols) == 1
+    paper = td / "paper_lines.txt"
+    paper.write_text(
+        "=abstract\nWe show a thing.\n\n"
+        "=title\nThe Paper\n=authors\nA. Academic\n=journal\narXiv 2026\n\n"
+        "=column\nOpening sentence.\n"
+        "=column\n=section Next\nMore.\n"
+    )
+    sheet = Sheet(td, has_abstract=True)
+    parse_and_place(paper, sheet)
+    assert sheet.hang == 104.0, sheet.hang
+    assert sheet.title_n == 1
+    assert len(sheet.cols) == 3
+    assert _plain(sheet.cols[0].items[0]) == "Abstract"
+    assert sheet.cols[0].items[0].y == sheet.title_y
+    assert sheet.cols[0].items[0].whole == "bold"
+    assert sheet.cols[0].items[1].whole == "italic"
+    assert _plain(sheet.cols[1].items[0]) == "The Paper"
+    assert sheet.cols[1].items[0].y == FIRST_Y
+    assert not any(abs(it.y - sheet.title_y) < 0.01 for it in sheet.cols[1].items)
+    print("ok")
 
 
 if __name__ == "__main__":
@@ -541,5 +678,8 @@ if __name__ == "__main__":
     names = sys.argv[1:]
     if not names:
         sys.exit("usage: build_sheet.py NAME ...")
+    if names == ["--check"]:
+        _check()
+        sys.exit(0)
     for name in names:
         main(name)

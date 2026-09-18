@@ -28,20 +28,20 @@ Default library: PyMuPDF. Use it for PDF text, figure clips, width measurement (
 4. **Hangline.** Decide whether an abstract column exists and what the masthead is. Set the hangline from the masthead as format.md states.
    Done when the hangline is a number.
 
-5. **Sense lines and columns.** Read the clean file through. Write `name_lines.txt`. One line in that file is one line of type. Break where a reader pauses, per layout.md. Measure a drafted line only to see whether it fits 324 pt at the indent it will have; if it does not, rewrite it. Markers: `=title`, `=authors`, `=journal`, `=column`, `=section`, `=aside`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. Fill one column at a time. Start a column when a named head in the source begins (`=column`, then `=section` for a major unit or `=aside` for a named part), or when this column is already deep and the next paragraph is a good break. Quotes, lists, and figures stay in the current column. `=subsection` only for a true subordinate that would leave a stub column.
+5. **Sense lines and columns.** Read the clean file through. Write `name_lines.txt`. One line in that file is one line of type. Break where a reader pauses, per layout.md. Measure a drafted line only to see whether it fits 324 pt at the indent it will have; if it does not, rewrite it. Markers: `=title`, `=subtitle`, `=authors`, `=journal`, `=abstract`, `=column`, `=section`, `=aside`, `=subsection`, `=quote`, `=quoteattr`, `=list`, `=figure`, `*italic*`, `[n]`. Fill one column at a time. An abstract is its own leftmost column: `=abstract`, then its body (the packer sets it italic). Do not use `=section Abstract`. Masthead markers (`=title`, `=subtitle`, `=authors`, `=journal` as the piece has them) go in the title column; they do not need a `=column` before them. Start a further column when a named head in the source begins (`=column`, then `=section` for a major unit or `=aside` for a named part), or when this column is already deep and the next paragraph is a good break. Quotes, lists, and figures stay in the current column. `=subsection` only for a true subordinate that would leave a stub column.
    Done when `name_lines.txt` exists, every body line in it is a line you wrote, and each named head in the source has a column (plus overflow as needed).
 
-6. **Figures.** At each callout, place in the text flow at the source size ratio in format.md. If the source is a PDF, clip the printed bbox from the page pixmap, not from raw image xrefs. If there is no printed size, leave the figure at its native size relative to the type. If the drawing cannot be recovered, the omit line in format.md.
+6. **Figures.** At each callout, place in the text flow at the source size ratio in format.md. If the source is a PDF, clip the printed bbox from the page pixmap, not from raw image xrefs. Write the display size (printed × 12 / source body size) on the marker: `=figure 1 mental.png 376.5 162.6`. If there is no printed size, leave the size off; the packer uses the image’s native size. If the drawing cannot be recovered, omit the filename (the omit line in format.md).
    Done when every callout is either a sized image in flow or an omit line.
 
-7. **Pack and emit.** `python3 build_sheet.py name`. One SVG; PDF is that drawing at the same point size.
+7. **Pack and emit.** `python3 build_sheet.py name` reads `name_lines.txt` and writes `name.svg` and `name.pdf`. One SVG; PDF is that drawing at the same point size.
    Done when the SVG’s width and height are the computed sheet size and the PDF is one page of those dimensions.
 
 8. **Check.**
-   - Every body line on the sheet is a line from `name_lines.txt`; every column on the sheet is a `=column` in that file.
+   - Every body line on the sheet is a line from `name_lines.txt`; every column on the sheet is a `=column` in that file, except the abstract column from `=abstract`.
    - Columns follow headed units in the source, plus overflow. Fill toward ~100 lines / ~2000–2700 pt high; do not hide named heads mid-column to keep the count small. Not thirty columns on a 900 pt strip.
    - No line longer than 324 pt at 12 pt.
-   - Hangline titles (section, named part, Abstract) one line above the hangline; title-column hangline − 14 empty.
+   - Hangline titles (section, named part, Abstract) one line above the hangline; title-column hangline − 14 empty. Abstract is leftmost; title column is next.
    - Columns consecutive; no empty slot.
    - Figures not stretched to a slot width.
    - Bibliography absent; inline cues kept as 7 pt superscripts.
